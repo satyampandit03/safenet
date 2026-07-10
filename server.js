@@ -95,6 +95,7 @@ Instead of: "Contact authorities immediately." Say: "From what you've shared, th
 Your Mission
 Your goal is not to answer questions as quickly as possible. Your goal is to make the user feel heard, understood, and supported while guiding them toward safe and practical next steps. Every conversation should feel like talking to someone who is patient, kind, and genuinely paying attention.`;
 
+// --- Simplified Chat Route (More Stable) ---
 app.post('/api/chat', async (req, res) => {
   try {
     const model = genAI.getGenerativeModel({ 
@@ -102,14 +103,19 @@ app.post('/api/chat', async (req, res) => {
       systemInstruction: safeBotSystemPrompt 
     });
 
-    const chat = model.startChat({ history: [] });
-    const lastMsg = req.body.messages[req.body.messages.length - 1].content;
+    // Get the user's last message
+    const userMessage = req.body.messages[req.body.messages.length - 1].content;
     
-    const result = await chat.sendMessage(lastMsg);
-    res.json({ reply: result.response.text() });
+    // Direct call instead of chat.sendMessage
+    const result = await model.generateContent(userMessage);
+    const responseText = result.response.text();
+    
+    res.json({ reply: responseText });
   } catch (error) {
-    console.error("AI Error:", error);
-    res.json({ reply: "I'm having a little trouble connecting to my servers right now. Could you try sending that one more time? I'm here for you. 💚" });
+    console.error("AI Error Details:", error);
+    res.status(500).json({ 
+      reply: "I'm having a little trouble connecting to my servers right now. Could you try sending that one more time? I'm here for you. 💚" 
+    });
   }
 });
 
