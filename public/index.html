@@ -3,205 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SafeNet — Cyberbullying & Online Safety</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- Tailwind CDN for the new Hero/Nav -->
+<title>SafeNet — AI Cyberbullying Defense</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Tailwind CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* VANILLA CSS FOR YOUR EXISTING TOOLS */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #0F6E56;
-    --purple: #7F77DD; --purple-light: #EEEDFE; --purple-dark: #3C3489;
-    --coral: #D85A30; --coral-light: #FAECE7;
-    --amber: #BA7517; --amber-light: #FAEEDA;
-    --blue: #378ADD; --blue-light: #E6F1FB;
-    --gray-50: #F8F8F6; --gray-100: #F1EFE8; --gray-200: #D3D1C7;
-    --gray-500: #888780; --gray-700: #444441; --gray-900: #2C2C2A;
-    --text: #1a1a18; --text-muted: #6b6a66;
-    --radius: 12px; --radius-sm: 8px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  /* LINEAR.APP STYLE ANIMATED GRADIENT BACKGROUND */
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   body { 
     font-family: 'Inter', sans-serif; 
-    background: var(--gray-50); 
-    color: var(--text); 
+    /* Deep, calm dark mode gradient */
+    background: linear-gradient(-45deg, #09090b, #18181b, #0f172a, #064e3b);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #f4f4f5; 
     line-height: 1.6; 
-    min-height: 100vh; 
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
-  /* SECTION ROUTING & PADDING FOR FLOATING NAV */
-  section { display: none; }
-  /* Adds padding to all tools so the fixed navbar doesn't cover them */
+  /* GLASSMORPHISM UTILITIES */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-input {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  .glass-input:focus {
+    border-color: #46E3B7;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(70, 227, 183, 0.2);
+  }
+
+  /* ROUTING */
+  section { display: none; opacity: 0; transition: opacity 0.4s ease; }
   section:not(#home) { padding-top: 120px; padding-bottom: 60px; min-height: 100vh; }
-  section.active { display: block; }
+  section.active { display: block; opacity: 1; }
 
   /* TOOL CONTAINER */
   .tool-wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
-  .tool-header { margin-bottom: 1.5rem; }
-  .tool-header h2 { font-size: 24px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
-  .tool-header p { font-size: 15px; color: var(--text-muted); }
+  .tool-header { margin-bottom: 2rem; text-align: center; }
+  .tool-header h2 { font-size: 28px; font-weight: 600; color: #fff; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .tool-header p { font-size: 15px; color: #a1a1aa; }
 
   /* ANALYZER */
-  .analyzer-box { background: #fff; border: 0.5px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; }
-  .anon-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-100); color: var(--text-muted); font-size: 12px; padding: 4px 10px; border-radius: 999px; margin-bottom: 1rem; }
-  textarea { width: 100%; border: 0.5px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px; font-family: inherit; font-size: 15px; color: var(--text); resize: vertical; min-height: 120px; transition: border-color 0.15s; outline: none; background: var(--gray-50); }
-  textarea:focus { border-color: var(--teal); background: #fff; }
-  textarea::placeholder { color: var(--gray-500); }
-  .analyze-btn { margin-top: 12px; background: var(--teal); color: #fff; border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-size: 15px; font-weight: 500; cursor: pointer; width: 100%; transition: background 0.15s; }
-  .analyze-btn:hover:not(:disabled) { background: var(--teal-dark); }
-  .analyze-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .analyzer-box { padding: 2rem; }
+  .anon-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); color: #a1a1aa; font-size: 12px; padding: 6px 14px; border-radius: 999px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1); }
+  textarea { width: 100%; border-radius: 12px; padding: 16px; font-family: inherit; font-size: 15px; resize: vertical; min-height: 140px; transition: all 0.2s ease; }
+  textarea::placeholder { color: #52525b; }
+  
+  .analyze-btn { margin-top: 16px; background: #46E3B7; color: #000; border: none; border-radius: 12px; padding: 14px 24px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.2s ease; }
+  .analyze-btn:hover:not(:disabled) { background: #fff; transform: translateY(-1px); }
+  .analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* RESULT */
-  .result { margin-top: 1.25rem; border-radius: var(--radius-sm); padding: 1.25rem; display: none; }
-  .result.show { display: block; }
-  .result.safe { background: #EAF3DE; border: 0.5px solid #97C459; }
-  .result.warning { background: var(--amber-light); border: 0.5px solid #EF9F27; }
-  .result.danger { background: var(--coral-light); border: 0.5px solid var(--coral); }
-  .result-label { font-size: 13px; font-weight: 500; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-  .result.safe .result-label { color: #3B6D11; }
-  .result.warning .result-label { color: var(--amber); }
-  .result.danger .result-label { color: var(--coral); }
-  .result-text { font-size: 14px; line-height: 1.7; }
-  .result.safe .result-text { color: #27500A; }
-  .result.warning .result-text { color: #633806; }
-  .result.danger .result-text { color: #712B13; }
-  .result-actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
-  .result-action-btn { font-size: 13px; padding: 7px 14px; border-radius: var(--radius-sm); border: 0.5px solid; cursor: pointer; font-weight: 500; background: transparent; transition: background 0.15s; }
-  .result.danger .result-action-btn { border-color: var(--coral); color: var(--coral); }
-  .result.danger .result-action-btn:hover { background: rgba(216,90,48,0.08); }
-  .result.warning .result-action-btn { border-color: var(--amber); color: var(--amber); }
-  .result.warning .result-action-btn:hover { background: rgba(186,117,23,0.08); }
-  .result.safe .result-action-btn { border-color: #3B6D11; color: #3B6D11; }
+  /* RESULT CARDS */
+  .result { margin-top: 1.5rem; border-radius: 12px; padding: 1.5rem; display: none; transition: all 0.3s ease; }
+  .result.show { display: block; animation: slideUp 0.4s ease; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .result.safe { background: rgba(70, 227, 183, 0.1); border: 1px solid rgba(70, 227, 183, 0.3); }
+  .result.warning { background: rgba(250, 204, 21, 0.1); border: 1px solid rgba(250, 204, 21, 0.3); }
+  .result.danger { background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); }
+  
+  .result-label { font-size: 14px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .result.safe .result-label { color: #46E3B7; }
+  .result.warning .result-label { color: #facc15; }
+  .result.danger .result-label { color: #f87171; }
+  
+  .result-text { font-size: 15px; line-height: 1.7; color: #e4e4e7; }
+  .result-actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .result-action-btn { font-size: 13px; padding: 8px 16px; border-radius: 8px; border: 1px solid; cursor: pointer; font-weight: 500; background: transparent; transition: all 0.2s ease; }
+  
+  .result.danger .result-action-btn { border-color: #f87171; color: #f87171; }
+  .result.danger .result-action-btn:hover { background: rgba(248, 113, 113, 0.1); }
+  .result.warning .result-action-btn { border-color: #facc15; color: #facc15; }
+  .result.warning .result-action-btn:hover { background: rgba(250, 204, 21, 0.1); }
+  .result.safe .result-action-btn { border-color: #46E3B7; color: #46E3B7; }
 
   /* CHATBOT */
-  .chat-wrap { background: #fff; border: 0.5px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; }
-  .chat-messages { height: 360px; overflow-y: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: 12px; }
-  .msg { max-width: 78%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.6; }
-  .msg.bot { background: var(--gray-100); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
-  .msg.user { background: var(--teal); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
-  .msg.typing { display: flex; align-items: center; gap: 4px; padding: 14px 18px; }
-  .dot { width: 7px; height: 7px; background: var(--gray-500); border-radius: 50%; animation: bounce 1.2s infinite; }
-  .dot:nth-child(2) { animation-delay: 0.2s; }
-  .dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
-  .chat-input-row { display: flex; border-top: 0.5px solid var(--gray-200); }
-  .chat-input { flex: 1; border: none; padding: 14px 16px; font-family: inherit; font-size: 14px; outline: none; color: var(--text); background: transparent; }
-  .chat-input::placeholder { color: var(--gray-500); }
-  .chat-send { background: var(--teal); color: #fff; border: none; padding: 0 20px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
-  .chat-send:hover { background: var(--teal-dark); }
+  .chat-wrap { overflow: hidden; display: flex; flex-direction: column; height: 500px; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 16px; }
+  .chat-messages::-webkit-scrollbar { width: 6px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+  
+  .msg { max-width: 80%; padding: 12px 16px; font-size: 14px; line-height: 1.6; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .msg.bot { background: rgba(255, 255, 255, 0.05); color: #e4e4e7; align-self: flex-start; border-radius: 16px 16px 16px 4px; border: 1px solid rgba(255,255,255,0.05); }
+  .msg.user { background: #46E3B7; color: #000; align-self: flex-end; border-radius: 16px 16px 4px 16px; font-weight: 500; }
+  
+  .chat-input-row { display: flex; border-top: 1px solid rgba(255,255,255,0.05); padding: 12px; background: rgba(0,0,0,0.2); }
+  .chat-input { flex: 1; border: none; padding: 12px 16px; font-family: inherit; font-size: 14px; outline: none; background: transparent; color: white; }
+  .chat-input::placeholder { color: #52525b; }
+  .chat-send { background: #46E3B7; color: #000; border: none; padding: 0 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+  .chat-send:hover { background: #fff; }
 
-  /* HELPLINE */
-  .helpline-grid { display: grid; gap: 12px; }
-  .helpline-card { background: #fff; border: 0.5px solid var(--gray-200); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; }
-  .helpline-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-  .helpline-num { font-size: 20px; font-weight: 600; color: var(--teal-dark); }
-  .helpline-name { font-size: 15px; font-weight: 500; color: var(--gray-900); margin-bottom: 2px; }
-  .helpline-desc { font-size: 13px; color: var(--text-muted); }
+  /* HELPLINES & GUIDES */
+  .grid-list { display: grid; gap: 12px; }
+  .card-item { padding: 1.25rem; display: flex; align-items: center; gap: 1rem; transition: all 0.2s ease; cursor: pointer; }
+  .card-item:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+  .icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+  
+  .guide-header { padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background 0.2s; }
+  .guide-header:hover { background: rgba(255,255,255,0.05); }
+  .guide-header h3 { font-size: 15px; font-weight: 500; color: #fff; display: flex; align-items: center; gap: 12px; }
+  .guide-body { display: none; padding: 0 1.25rem 1.25rem; font-size: 14px; color: #a1a1aa; line-height: 1.7; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 10px; padding-top: 10px; }
+  .guide-body.open { display: block; animation: fadeIn 0.3s ease; }
 
-  /* QUIZ */
-  .quiz-box { background: #fff; border: 0.5px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; }
-  .quiz-progress { height: 4px; background: var(--gray-100); border-radius: 2px; margin-bottom: 1.5rem; }
-  .quiz-progress-fill { height: 100%; background: var(--teal); border-radius: 2px; transition: width 0.3s; }
-  .quiz-q { font-size: 16px; font-weight: 500; color: var(--gray-900); margin-bottom: 1rem; line-height: 1.5; }
-  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
-  .quiz-opt { padding: 12px 16px; border: 0.5px solid var(--gray-200); border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; color: var(--text); transition: all 0.15s; background: var(--gray-50); }
-  .quiz-opt:hover { border-color: var(--teal); background: var(--teal-light); color: var(--teal-dark); }
-  .quiz-opt.selected { border-color: var(--teal); background: var(--teal-light); color: var(--teal-dark); }
-  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; }
-  .quiz-count { font-size: 13px; color: var(--text-muted); }
-  .quiz-result { text-align: center; padding: 1rem 0; }
-  .quiz-score { font-size: 48px; font-weight: 600; color: var(--teal); }
-  .quiz-score-label { font-size: 16px; font-weight: 500; margin-top: 8px; color: var(--gray-900); }
-  .quiz-advice { font-size: 14px; color: var(--text-muted); margin-top: 8px; line-height: 1.6; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
-  .btn-primary { background: var(--teal); color: #fff; }
-  .btn-primary:hover { background: var(--teal-dark); }
-  .btn-secondary { background: #fff; color: var(--gray-700); border: 0.5px solid var(--gray-200); }
-  .btn-secondary:hover { background: var(--gray-100); }
-
-  /* GUIDES */
-  .guide-list { display: flex; flex-direction: column; gap: 10px; }
-  .guide-card { background: #fff; border: 0.5px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; }
-  .guide-header { padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
-  .guide-header:hover { background: var(--gray-50); }
-  .guide-header h3 { font-size: 15px; font-weight: 500; color: var(--gray-900); display: flex; align-items: center; gap: 10px; }
-  .guide-chevron { color: var(--gray-500); font-size: 14px; transition: transform 0.2s; }
-  .guide-body { display: none; padding: 0 1.25rem 1.25rem; font-size: 14px; color: var(--text-muted); line-height: 1.7; border-top: 0.5px solid var(--gray-100); }
-  .guide-body.open { display: block; }
-
-  /* LOADING */
-  .loading-spinner { display: none; align-items: center; gap: 8px; font-size: 14px; color: var(--text-muted); margin-top: 12px; }
+  /* LOADING SPINNER */
+  .loading-spinner { display: none; align-items: center; gap: 10px; font-size: 14px; color: #a1a1aa; margin-top: 16px; }
   .loading-spinner.show { display: flex; }
-  .spinner { width: 16px; height: 16px; border: 2px solid var(--gray-200); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.1); border-top-color: #46E3B7; border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* FOOTER */
-  footer { text-align: center; padding: 2rem; font-size: 13px; color: var(--text-muted); border-top: 0.5px solid var(--gray-200); background: var(--gray-50); }
+  /* TYPING ANIMATION */
+  .msg.typing { display: flex; align-items: center; gap: 4px; padding: 16px 20px; }
+  .dot { width: 6px; height: 6px; background: #a1a1aa; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+  .dot:nth-child(1) { animation-delay: -0.32s; }
+  .dot:nth-child(2) { animation-delay: -0.16s; }
+  @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
 </style>
 </head>
-<body class="m-0 p-0 font-sans">
+<body>
 
-<!-- PREMIUM FLOATING NAVBAR (Tailwind) -->
-<nav class="fixed top-0 left-0 w-full flex items-center justify-center pt-4 sm:pt-6 px-4 sm:px-8 gap-2 sm:gap-3 z-[100] bg-transparent border-none">
-  <!-- Left Circular Logo Container -->
-  <div class="flex items-center justify-center rounded-full w-10 h-10 sm:w-11 sm:h-11 shrink-0 bg-[#EDEDED] shadow-lg cursor-pointer hover:scale-105 transition-transform" onclick="showSection('home')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgb(84, 84, 84)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-      </svg>
-  </div>
-
-  <!-- Right Pill Container -->
-  <div class="flex items-center gap-4 sm:gap-6 md:gap-10 rounded-xl px-4 sm:px-8 py-2.5 sm:py-3 bg-[#EDEDED]/90 backdrop-blur-md shadow-lg border border-white/20">
-      <a href="#" onclick="showSection('analyzer')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">Analyzer</a>
-      <a href="#" onclick="showSection('chat')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">SafeBot</a>
-      <a href="#" onclick="showSection('guides')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">Guides</a>
-      <a href="#" onclick="showSection('helplines')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">Help</a>
-      <a href="#" onclick="showSection('quiz')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">Quiz</a>
+<!-- PREMIUM FLOATING NAVBAR -->
+<nav class="fixed top-0 left-0 w-full flex items-center justify-center pt-6 px-4 z-[100]">
+  <div class="glass-card px-6 py-3 flex items-center gap-6 sm:gap-10 rounded-2xl shadow-2xl">
+      <div class="flex items-center gap-2 cursor-pointer mr-2" onclick="showSection('home')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#46E3B7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span class="font-bold text-white tracking-tight hidden sm:block">SafeNet</span>
+      </div>
+      <div class="w-px h-5 bg-white/20 hidden sm:block"></div>
+      <a href="#" onclick="showSection('analyzer')" class="text-[13px] font-medium text-gray-300 hover:text-white transition-colors duration-200">Analyzer</a>
+      <a href="#" onclick="showSection('chat')" class="text-[13px] font-medium text-gray-300 hover:text-white transition-colors duration-200">SafeBot</a>
+      <a href="#" onclick="showSection('guides')" class="text-[13px] font-medium text-gray-300 hover:text-white transition-colors duration-200">Guides</a>
+      <a href="#" onclick="showSection('helplines')" class="text-[13px] font-medium text-gray-300 hover:text-white transition-colors duration-200">Help</a>
   </div>
 </nav>
 
-<!-- IMMERSIVE VIDEO HERO SECTION (Tailwind) -->
-<section id="home" class="active relative min-h-screen overflow-hidden bg-[#121212] m-0 p-0">
-  <!-- Fullscreen Autoplaying Background Video -->
-  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-60">
-      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_215831_c6a8989c-d716-4d8d-8745-e972a2eec711.mp4" type="video/mp4">
-  </video>
+<!-- HERO SECTION (No Video, Just Glass & Gradients) -->
+<section id="home" class="active relative min-h-screen flex items-center justify-center pt-20 pb-12 px-6">
+  <div class="max-w-3xl text-center flex flex-col items-center">
+      <!-- 3D-ish Floating Badge -->
+      <div class="glass-card inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 shadow-lg transform hover:scale-105 transition-transform duration-300 cursor-default">
+          <span class="w-2 h-2 rounded-full bg-[#46E3B7] animate-pulse"></span>
+          <span class="text-[12px] font-medium text-gray-200 tracking-wide uppercase">AI Powered Defense</span>
+      </div>
 
-  <!-- Foreground Content Wrapper -->
-  <div class="relative z-10 flex flex-col min-h-screen">
-      <div class="flex-1 flex items-end pb-12 sm:pb-16 lg:pb-20 px-6 sm:px-12 md:px-20 lg:px-28">
-          <div class="max-w-lg text-left">
-              
-              <!-- 1. Top Tech Badge -->
-              <div class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#46E3B7] mb-4 uppercase tracking-wider">
-                  🛡️ Free · Anonymous · Safe
-              </div>
+      <!-- Linear.app Style Headline -->
+      <h1 class="text-[3rem] sm:text-[4.5rem] leading-[1.05] font-semibold text-white tracking-tight mb-6 drop-shadow-2xl">
+          Digital safety, <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#46E3B7] to-[#3b82f6]">engineered for you.</span>
+      </h1>
 
-              <!-- 2. Headline -->
-              <h1 class="text-[2.2rem] sm:text-[2.8rem] leading-[1.1] font-semibold text-white tracking-tight mb-4 drop-shadow-lg" style="color:white; text-align:left; margin-bottom:1rem; padding:0;">
-                  Anonymous, smart AI defense made for students who keep fighting.
-              </h1>
+      <p class="text-[16px] sm:text-[18px] text-gray-400 font-normal mb-10 max-w-xl mx-auto leading-relaxed">
+          Reclaim your peace of mind. Instantly analyze toxic messages and get anonymous peer support without judgment.
+      </p>
 
-              <!-- 3. Subtext -->
-              <p class="text-[15px] text-gray-300 font-normal mb-8 max-w-md" style="color:#d1d5db; text-align:left; line-height: 1.6;">
-                  Reclaim your digital peace. Analyze threats, learn safety protocols, and get immediate peer support without judgment.
-              </p>
-
-              <!-- 4. Call to Action Buttons -->
-              <div class="flex flex-wrap gap-4 mb-3">
-                  <button onclick="showSection('chat')" class="inline-flex items-center justify-center gap-2 text-[14px] font-bold text-[#121212] bg-[#46E3B7] border border-[#46E3B7] rounded-full px-7 py-3.5 hover:bg-white hover:text-black hover:border-white transition-all duration-200 group shadow-[0_0_20px_rgba(70,227,183,0.3)] cursor-pointer">
-                      Get Anonymous Help
-                      <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-                  </button>
-                  <button onclick="showSection('analyzer')" class="inline-flex items-center justify-center gap-2 text-[14px] font-medium text-white border border-gray-400 rounded-full px-7 py-3.5 hover:bg-white/10 hover:border-white transition-all duration-200 bg-black/40 backdrop-blur-md cursor-pointer">
-                      Analyze a Message
-                  </button>
-              </div>
-              
-          </div>
+      <!-- Glass Buttons -->
+      <div class="flex flex-wrap justify-center gap-4">
+          <button onclick="showSection('chat')" class="bg-[#46E3B7] text-black text-[14px] font-bold px-8 py-4 rounded-xl hover:bg-white transition-colors duration-200 shadow-[0_0_30px_rgba(70,227,183,0.3)]">
+              Talk to SafeBot
+          </button>
+          <button onclick="showSection('analyzer')" class="glass-card text-white text-[14px] font-medium px-8 py-4 rounded-xl hover:bg-white/10 transition-colors duration-200">
+              Analyze a Message
+          </button>
       </div>
   </div>
 </section>
@@ -210,22 +192,28 @@
 <section id="analyzer">
   <div class="tool-wrap">
     <div class="tool-header">
-      <h2>🔍 Message analyzer</h2>
-      <p>Paste a message you received and AI will analyze if it's cyberbullying, harassment, or safe.</p>
+      <h2>Threat Analyzer</h2>
+      <p>Paste any message below. Our AI will instantly detect harassment or toxicity.</p>
     </div>
-    <div class="analyzer-box">
-      <div class="anon-badge">🔒 Anonymous — nothing is saved or stored</div>
-      <textarea id="msg-input" placeholder="Paste the message here... e.g. 'You're so ugly, nobody likes you. Just disappear.'"></textarea>
+    <div class="glass-card analyzer-box">
+      <div class="anon-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          End-to-End Anonymous
+      </div>
+      <textarea id="msg-input" class="glass-input" placeholder="Paste the message here... e.g. 'You're a loser, delete your account.'"></textarea>
+      
       <div class="loading-spinner" id="analyzer-loading">
         <div class="spinner"></div>
-        Analyzing message...
+        Running neural analysis...
       </div>
+      
       <div class="result" id="analyzer-result">
         <div class="result-label" id="result-label"></div>
         <div class="result-text" id="result-text"></div>
         <div class="result-actions" id="result-actions"></div>
       </div>
-      <button class="analyze-btn" id="analyze-btn" onclick="analyzeMessage()">Analyze this message →</button>
+      
+      <button class="analyze-btn" id="analyze-btn" onclick="analyzeMessage()">Analyze Content</button>
     </div>
   </div>
 </section>
@@ -234,15 +222,15 @@
 <section id="chat">
   <div class="tool-wrap">
     <div class="tool-header">
-      <h2>🤖 SafeBot</h2>
-      <p>You can talk to SafeBot anonymously. It won't judge you and will help you figure out what to do.</p>
+      <h2>SafeBot Interface</h2>
+      <p>Anonymous, zero-judgment AI peer support.</p>
     </div>
-    <div class="chat-wrap">
+    <div class="glass-card chat-wrap">
       <div class="chat-messages" id="chat-messages">
-        <div class="msg bot">Hi 👋 I'm SafeBot. You're safe here — everything is anonymous. Are you going through something online that's bothering you? Tell me what's happening.</div>
+        <div class="msg bot">Hello. I'm SafeBot. Everything here stays strictly between us. What's on your mind today?</div>
       </div>
       <div class="chat-input-row">
-        <input class="chat-input" id="chat-input" placeholder="Type your message..." onkeydown="if(event.key==='Enter') sendChat()" />
+        <input class="chat-input" id="chat-input" placeholder="Message SafeBot..." onkeydown="if(event.key==='Enter') sendChat()" autocomplete="off" />
         <button class="chat-send" onclick="sendChat()">Send</button>
       </div>
     </div>
@@ -253,51 +241,30 @@
 <section id="guides">
   <div class="tool-wrap">
     <div class="tool-header">
-      <h2>📚 Safety guides</h2>
-      <p>Simple, clear advice for students on staying safe online.</p>
+      <h2>Safety Protocols</h2>
+      <p>Standard operating procedures for handling digital threats.</p>
     </div>
-    <div class="guide-list">
-      <div class="guide-card">
+    <div class="grid-list">
+      <div class="glass-card">
         <div class="guide-header" onclick="toggleGuide(this)">
-          <h3>🚨 What is cyberbullying?</h3>
-          <span class="guide-chevron">▼</span>
+          <h3><span class="text-xl">📸</span> Secure Evidence First</h3>
+          <span class="text-gray-500">▼</span>
         </div>
-        <div class="guide-body">Cyberbullying is when someone uses the internet, phones, or apps to hurt, threaten, embarrass, or exclude another person repeatedly. It can happen on Instagram, WhatsApp, YouTube comments, online games, and more. Signs include: getting mean messages, being left out of group chats deliberately, someone spreading rumors about you online, or your photos being shared without permission.</div>
+        <div class="guide-body">Before blocking or deleting anything, take a screenshot. This is your immutable proof. Save the date and time. On Android: Volume Down + Power. On iPhone: Side button + Volume Up. Store these locally.</div>
       </div>
-      <div class="guide-card">
+      <div class="glass-card">
         <div class="guide-header" onclick="toggleGuide(this)">
-          <h3>📸 Take screenshots as evidence</h3>
-          <span class="guide-chevron">▼</span>
+          <h3><span class="text-xl">🚫</span> Block & Report Protocol</h3>
+          <span class="text-gray-500">▼</span>
         </div>
-        <div class="guide-body">Before blocking or deleting anything, take a screenshot of the messages, posts, or comments. This is your proof. Save the date and time if visible. On Android: press Volume Down + Power. On iPhone: press Side button + Volume Up. Store these in a safe folder. Evidence is important if you want to report to your school, parents, or police.</div>
+        <div class="guide-body">Always report AND block. Reporting pushes the platform's moderation algorithms to take action on the malicious account. On Instagram/WhatsApp/Snapchat: Tap the profile, hit the three dots, and execute Block/Report.</div>
       </div>
-      <div class="guide-card">
+      <div class="glass-card">
         <div class="guide-header" onclick="toggleGuide(this)">
-          <h3>🚫 How to block and report</h3>
-          <span class="guide-chevron">▼</span>
+          <h3><span class="text-xl">🔒</span> Lockdown Privacy</h3>
+          <span class="text-gray-500">▼</span>
         </div>
-        <div class="guide-body">On Instagram: tap the profile → three dots → Block/Report. On WhatsApp: tap the name → three dots → Block. On YouTube: click the three dots on any comment → Report. On Snapchat: tap the name → press and hold → Block. Always report AND block — reporting helps the platform take action on the bully's account.</div>
-      </div>
-      <div class="guide-card">
-        <div class="guide-header" onclick="toggleGuide(this)">
-          <h3>🔒 Check your privacy settings</h3>
-          <span class="guide-chevron">▼</span>
-        </div>
-        <div class="guide-body">Set your Instagram and Snapchat to Private so only approved followers see your content. On WhatsApp, go to Settings → Privacy → set Last Seen, Profile Photo, and Status to "My Contacts" only. Never share your location publicly. Avoid accepting friend requests from strangers. Use a strong password and enable two-factor authentication.</div>
-      </div>
-      <div class="guide-card">
-        <div class="guide-header" onclick="toggleGuide(this)">
-          <h3>💬 Tell a trusted adult</h3>
-          <span class="guide-chevron">▼</span>
-        </div>
-        <div class="guide-body">You don't have to handle this alone. Tell a parent, teacher, school counselor, or any adult you trust. It can feel scary or embarrassing, but adults can help in ways you can't on your own — like talking to the bully's parents, contacting the school, or filing a complaint. If you're afraid to talk in person, write it in a note or send a text.</div>
-      </div>
-      <div class="guide-card">
-        <div class="guide-header" onclick="toggleGuide(this)">
-          <h3>🧠 Protect your mental health</h3>
-          <span class="guide-chevron">▼</span>
-        </div>
-        <div class="guide-body">Being bullied online can feel overwhelming and deeply hurtful. Remember: it is NOT your fault. Take breaks from social media. Spend time with people who care about you. Write in a journal. If you feel very sad, anxious, or don't want to go to school, please talk to a counselor. Calling iCall (9152987821) or Childline (1098) is always an option.</div>
+        <div class="guide-body">Audit your privacy settings immediately. Set Instagram/Snapchat to Private. On WhatsApp, restrict Profile Photo and Status to "My Contacts". Never broadcast live location data publicly.</div>
       </div>
     </div>
   </div>
@@ -307,72 +274,36 @@
 <section id="helplines">
   <div class="tool-wrap">
     <div class="tool-header">
-      <h2>📞 Get help now</h2>
-      <p>You're not alone. These helplines are free, confidential, and staffed by people who care.</p>
+      <h2>Emergency Routing</h2>
+      <p>Direct lines to verified national crisis support infrastructure.</p>
     </div>
-    <div class="helpline-grid">
-      <div class="helpline-card">
-        <div class="helpline-icon" style="background:#FAECE7; font-size:22px;">🆘</div>
+    <div class="grid-list">
+      <div class="glass-card card-item">
+        <div class="icon-box text-[#46E3B7]">1098</div>
         <div>
-          <div class="helpline-name">Childline India</div>
-          <div class="helpline-num">1098</div>
-          <div class="helpline-desc">24/7 · Free · For anyone under 18 in distress</div>
+          <div class="text-[16px] font-semibold text-white">Childline India</div>
+          <div class="text-[13px] text-gray-400">24/7 immediate distress routing for minors.</div>
         </div>
       </div>
-      <div class="helpline-card">
-        <div class="helpline-icon" style="background:#EEEDFE; font-size:22px;">🧠</div>
+      <div class="glass-card card-item">
+        <div class="icon-box text-[#3b82f6]">iC</div>
         <div>
-          <div class="helpline-name">iCall — Mental Health</div>
-          <div class="helpline-num">9152987821</div>
-          <div class="helpline-desc">Mon–Sat 8am–10pm · Counseling for youth</div>
+          <div class="text-[16px] font-semibold text-white">iCall Mental Health</div>
+          <div class="text-[13px] text-gray-400">9152987821 · Professional psychiatric counseling.</div>
         </div>
       </div>
-      <div class="helpline-card">
-        <div class="helpline-icon" style="background:#E1F5EE; font-size:22px;">💚</div>
+      <div class="glass-card card-item">
+        <div class="icon-box text-[#f87171]">CY</div>
         <div>
-          <div class="helpline-name">Vandrevala Foundation</div>
-          <div class="helpline-num">1860-2662-345</div>
-          <div class="helpline-desc">24/7 · Free · Mental health & crisis support</div>
-        </div>
-      </div>
-      <div class="helpline-card">
-        <div class="helpline-icon" style="background:#E6F1FB; font-size:22px;">👮</div>
-        <div>
-          <div class="helpline-name">Cyber Crime Portal</div>
-          <div class="helpline-num">cybercrime.gov.in</div>
-          <div class="helpline-desc">Report online harassment, morphed images, threats</div>
-        </div>
-      </div>
-      <div class="helpline-card">
-        <div class="helpline-icon" style="background:#FAEEDA; font-size:22px;">🏫</div>
-        <div>
-          <div class="helpline-name">iDare — School Counseling</div>
-          <div class="helpline-num">9820466627</div>
-          <div class="helpline-desc">For students and parents dealing with school issues</div>
+          <div class="text-[16px] font-semibold text-white">Cyber Crime Dept</div>
+          <div class="text-[13px] text-gray-400">cybercrime.gov.in · Official portal for harassment.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- QUIZ -->
-<section id="quiz">
-  <div class="tool-wrap">
-    <div class="tool-header">
-      <h2>✅ Am I safe online?</h2>
-      <p>Answer 6 quick questions to check your online safety habits.</p>
-    </div>
-    <div class="quiz-box" id="quiz-box">
-      <div class="quiz-progress">
-        <div class="quiz-progress-fill" id="quiz-progress" style="width:0%"></div>
-      </div>
-      <div id="quiz-content"></div>
-    </div>
-  </div>
-</section>
-
-<footer>SafeNet · Built for Indian students · Anonymous & Free · 2024</footer>
-
+<!-- LOGIC -->
 <script>
 function showSection(id) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
@@ -380,10 +311,10 @@ function showSection(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── ANALYZER ──
+// ── ANALYZER LOGIC ──
 async function analyzeMessage() {
   const msg = document.getElementById('msg-input').value.trim();
-  if (!msg) { alert('Please paste a message to analyze.'); return; }
+  if (!msg) return;
 
   const btn = document.getElementById('analyze-btn');
   const loader = document.getElementById('analyzer-loading');
@@ -403,8 +334,7 @@ async function analyzeMessage() {
     const parsed = await res.json();
 
     result.className = `result show ${parsed.severity}`;
-    const icons = { safe: '✅', warning: '⚠️', danger: '🚨' };
-    document.getElementById('result-label').textContent = `${icons[parsed.severity]} ${parsed.label}`;
+    document.getElementById('result-label').textContent = `${parsed.severity} MATCH`;
     document.getElementById('result-text').textContent = parsed.explanation;
 
     const actionsEl = document.getElementById('result-actions');
@@ -415,25 +345,17 @@ async function analyzeMessage() {
       b.textContent = a;
       actionsEl.appendChild(b);
     });
-    if (parsed.severity !== 'safe') {
-      const helpBtn = document.createElement('button');
-      helpBtn.className = 'result-action-btn';
-      helpBtn.textContent = '📞 View helplines';
-      helpBtn.onclick = () => showSection('helplines');
-      actionsEl.appendChild(helpBtn);
-    }
   } catch(e) {
-    const result = document.getElementById('analyzer-result');
     result.className = 'result show warning';
-    document.getElementById('result-label').textContent = '⚠️ Could not connect';
-    document.getElementById('result-text').textContent = 'Unable to analyze right now. If you feel unsafe, please reach out to Childline at 1098 or iCall at 9152987821.';
+    document.getElementById('result-label').textContent = 'SYSTEM ERROR';
+    document.getElementById('result-text').textContent = 'Unable to connect to AI server. Please try again later.';
     document.getElementById('result-actions').innerHTML = '';
   }
   loader.classList.remove('show');
   btn.disabled = false;
 }
 
-// ── CHATBOT ──
+// ── CHATBOT LOGIC ──
 let chatHistory = [];
 
 async function sendChat() {
@@ -443,11 +365,14 @@ async function sendChat() {
   input.value = '';
 
   const messages = document.getElementById('chat-messages');
+  
+  // User Bubble
   const userEl = document.createElement('div');
   userEl.className = 'msg user';
   userEl.textContent = msg;
   messages.appendChild(userEl);
 
+  // Typing Indicator
   const typing = document.createElement('div');
   typing.className = 'msg bot typing';
   typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
@@ -478,96 +403,24 @@ async function sendChat() {
     typing.remove();
     const botEl = document.createElement('div');
     botEl.className = 'msg bot';
-    botEl.textContent = "I'm having trouble connecting to the server right now. If you're in distress, please call Childline at 1098 or iCall at 9152987821. You're not alone. 💚";
+    botEl.textContent = "Server connection lost. Please hold while I attempt to reconnect.";
     messages.appendChild(botEl);
   }
   messages.scrollTop = messages.scrollHeight;
 }
 
-// ── GUIDES ──
+// ── GUIDES LOGIC ──
 function toggleGuide(header) {
   const body = header.nextElementSibling;
-  const chevron = header.querySelector('.guide-chevron');
-  body.classList.toggle('open');
-  chevron.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
-}
-
-// ── QUIZ ──
-const questions = [
-  { q: "Is your Instagram or social media profile set to private?", opts: ["Yes, always", "Sometimes", "No, it's public", "I don't use social media"] },
-  { q: "Do you share your location or home address with people online?", opts: ["Never", "Only with close friends", "Sometimes", "Yes, often"] },
-  { q: "Have you ever received a mean, threatening, or uncomfortable message online?", opts: ["No, never", "Once or twice", "It happens sometimes", "Yes, regularly"] },
-  { q: "Do you know how to block and report someone on Instagram or WhatsApp?", opts: ["Yes, I've done it before", "I know how, but haven't needed to", "Not really", "No idea"] },
-  { q: "If you were bullied online, would you tell a parent or trusted adult?", opts: ["Yes, immediately", "Maybe, I'd think about it", "Probably not", "No, I'd handle it alone"] },
-  { q: "Do you use strong, unique passwords for your social media accounts?", opts: ["Yes, always", "For most accounts", "Same password everywhere", "I don't think about it"] },
-];
-
-let quizAnswers = [];
-let currentQ = 0;
-
-function initQuiz() {
-  quizAnswers = [];
-  currentQ = 0;
-  renderQuestion();
-}
-
-function renderQuestion() {
-  const content = document.getElementById('quiz-content');
-  const progress = document.getElementById('quiz-progress');
-
-  if (currentQ >= questions.length) {
-    const score = calculateScore();
-    const pct = Math.round((score / questions.length) * 100);
-    let label, advice;
-    if (pct >= 80) { label = "You're quite safe! 🛡️"; advice = "Great habits! Stay alert and keep checking your privacy settings regularly."; }
-    else if (pct >= 50) { label = "Some risks to address ⚠️"; advice = "You're doing okay but there are a few habits to improve. Check out our Safety Guides for tips."; }
-    else { label = "You need better protection 🚨"; advice = "Don't worry — it's not too late. Read our Safety Guides and talk to a trusted adult about online safety."; }
-
-    content.innerHTML = `
-      <div class="quiz-result">
-        <div class="quiz-score">${pct}%</div>
-        <div class="quiz-score-label">${label}</div>
-        <div class="quiz-advice">${advice}</div>
-        <div style="margin-top:1.25rem; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-          <button class="btn btn-primary" onclick="showSection('guides')">Read safety guides</button>
-          <button class="btn btn-secondary" onclick="initQuiz()">Retake quiz</button>
-        </div>
-      </div>`;
-    progress.style.width = '100%';
-    return;
+  const isOpen = body.classList.contains('open');
+  
+  // Close all open guides first for a cleaner look
+  document.querySelectorAll('.guide-body').forEach(b => b.classList.remove('open'));
+  
+  if (!isOpen) {
+    body.classList.add('open');
   }
-
-  const q = questions[currentQ];
-  progress.style.width = `${(currentQ / questions.length) * 100}%`;
-  content.innerHTML = `
-    <p class="quiz-q">${q.q}</p>
-    <div class="quiz-options">
-      ${q.opts.map((o, i) => `<div class="quiz-opt" onclick="selectOpt(this, ${i})">${o}</div>`).join('')}
-    </div>
-    <div class="quiz-nav">
-      <span class="quiz-count">Question ${currentQ + 1} of ${questions.length}</span>
-      <button class="btn btn-primary" onclick="nextQ()" style="padding:9px 20px; font-size:14px;">Next →</button>
-    </div>`;
 }
-
-function selectOpt(el, idx) {
-  document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  quizAnswers[currentQ] = idx;
-}
-
-function nextQ() {
-  if (quizAnswers[currentQ] === undefined) { alert('Please select an answer.'); return; }
-  currentQ++;
-  renderQuestion();
-}
-
-function calculateScore() {
-  const goodAnswers = [0, 0, 0, 0, 0, 0];
-  return quizAnswers.reduce((acc, ans, i) => acc + (ans === goodAnswers[i] ? 1 : 0), 0);
-}
-
-initQuiz();
 </script>
 </body>
 </html>
