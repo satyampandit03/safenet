@@ -2,24 +2,20 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const { GoogleGenAI } = require('@google/genai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// --- MongoDB Connection ---
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB Connected Successfully!'))
-  .catch((err) => console.log('Database connection error:', err));
+  .then(() => console.log('MongoDB Connected!'))
+  .catch((err) => console.log('DB Error:', err));
 
-// --- Initialize Gemini ---
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY, 
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// --- SafeBot Master Psychological Prompt ---
+// Your full, master-engineered system prompt
 const safeBotSystemPrompt = `You are SafeBot, an AI companion designed to support people experiencing cyberbullying, online harassment, stalking, threats, scams, or other forms of digital abuse.
 Your purpose is not to immediately solve the problem.
 Your first responsibility is to understand the user's situation and help them feel heard.
@@ -99,54 +95,30 @@ Instead of: "Contact authorities immediately." Say: "From what you've shared, th
 Your Mission
 Your goal is not to answer questions as quickly as possible. Your goal is to make the user feel heard, understood, and supported while guiding them toward safe and practical next steps. Every conversation should feel like talking to someone who is patient, kind, and genuinely paying attention.`;
 
-// --- SafeBot Chat Route ---
 app.post('/api/chat', async (req, res) => {
   try {
-    const geminiMessages = req.body.messages.map(msg => ({
-      role: msg.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: msg.content }]
-    }));
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
-      contents: geminiMessages,
-      config: {
-        systemInstruction: safeBotSystemPrompt,
-        temperature: 0.3
-      }
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash",
+      systemInstruction: safeBotSystemPrompt 
     });
 
-    if (!response || !response.text) throw new Error("No response");
-
-    res.json({ reply: response.text });
+    const chat = model.startChat({ history: [] });
+    const lastMsg = req.body.messages[req.body.messages.length - 1].content;
+    
+    const result = await chat.sendMessage(lastMsg);
+    res.json({ reply: result.response.text() });
   } catch (error) {
-    console.error("AI Error:", error); 
-    res.json({ 
-      reply: "I'm so sorry, I'm having a little trouble connecting to my servers right now. Could you try sending that one more time? I'm here for you. 💚" 
-    });
+    console.error("AI Error:", error);
+    res.json({ reply: "I'm having a little trouble connecting to my servers right now. Could you try sending that one more time? I'm here for you. 💚" });
   }
 });
 
-// --- SafeBot Analyzer Route ---
 app.post('/api/analyze', async (req, res) => {
   try {
-    const prompt = `You are SafeNet AI, a cyberbullying detection assistant for Indian students. Analyze the message and respond ONLY in JSON with this exact format:
-{
-  "severity": "safe" | "warning" | "danger",
-  "label": "short status label",
-  "explanation": "2-3 sentences explaining what you found and why",
-  "actions": ["action 1", "action 2"]
-}
-No markdown, no preamble, only JSON.
-
-Message to analyze: "${req.body.message}"`;
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
-      contents: prompt,
-    });
-    
-    const cleanText = response.text.replace(/```json|```/g, '').trim();
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const prompt = `Analyze this message for cyberbullying. Return ONLY JSON: {"severity": "safe"|"warning"|"danger", "label": "status", "explanation": "2 sentences", "actions": ["action1", "action2"]}. Message: "${req.body.message}"`;
+    const result = await model.generateContent(prompt);
+    const cleanText = result.response.text().replace(/```json|```/g, '').trim();
     res.json(JSON.parse(cleanText));
   } catch (error) {
     console.error("Analyzer Error:", error);
