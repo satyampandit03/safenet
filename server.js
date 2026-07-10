@@ -141,8 +141,12 @@ app.post('/api/chat', async (req, res) => {
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      systemInstruction: safeBotSystemPrompt,
       contents: geminiMessages,
+      // THIS IS THE FIX: The config object wraps the system instruction
+      config: {
+        systemInstruction: safeBotSystemPrompt,
+        temperature: 0.3 // Keeps the AI strictly focused on your rules
+      }
     });
 
     res.json({ reply: response.text });
