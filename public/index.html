@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SafeNet — Cyberbullying & Online Safety</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Tailwind CDN for the new Hero/Nav -->
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
+  /* VANILLA CSS FOR YOUR EXISTING TOOLS */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -21,47 +24,25 @@
     --shadow: 0 1px 3px rgba(0,0,0,0.08);
   }
 
-  body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  body { 
+    font-family: 'Inter', sans-serif; 
+    background: var(--gray-50); 
+    color: var(--text); 
+    line-height: 1.6; 
+    min-height: 100vh; 
+  }
 
-  /* NAV */
-  nav { background: #fff; border-bottom: 0.5px solid var(--gray-200); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
-  .logo { font-size: 18px; font-weight: 600; color: var(--teal-dark); display: flex; align-items: center; gap: 8px; }
-  .logo-icon { width: 28px; height: 28px; background: var(--teal-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-  .nav-links { display: flex; gap: 1.5rem; }
-  .nav-links a { text-decoration: none; font-size: 14px; color: var(--text-muted); transition: color 0.15s; }
-  .nav-links a:hover { color: var(--teal-dark); }
-
-  /* SECTIONS */
+  /* SECTION ROUTING & PADDING FOR FLOATING NAV */
   section { display: none; }
+  /* Adds padding to all tools so the fixed navbar doesn't cover them */
+  section:not(#home) { padding-top: 120px; padding-bottom: 60px; min-height: 100vh; }
   section.active { display: block; }
 
-  /* HERO */
-  .hero { max-width: 760px; margin: 0 auto; padding: 4rem 1.5rem 3rem; text-align: center; }
-  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--teal-light); color: var(--teal-dark); font-size: 13px; font-weight: 500; padding: 5px 14px; border-radius: 999px; margin-bottom: 1.5rem; }
-  .hero h1 { font-size: 38px; font-weight: 600; color: var(--gray-900); line-height: 1.25; margin-bottom: 1rem; }
-  .hero h1 span { color: var(--teal); }
-  .hero p { font-size: 17px; color: var(--text-muted); max-width: 540px; margin: 0 auto 2rem; }
-  .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
-  .btn-primary { background: var(--teal); color: #fff; }
-  .btn-primary:hover { background: var(--teal-dark); }
-  .btn-secondary { background: #fff; color: var(--gray-700); border: 0.5px solid var(--gray-200); }
-  .btn-secondary:hover { background: var(--gray-100); }
-
-  /* FEATURES */
-  .features { max-width: 900px; margin: 0 auto; padding: 0 1.5rem 4rem; }
-  .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
-  .feat-card { background: #fff; border: 0.5px solid var(--gray-200); border-radius: var(--radius); padding: 1.25rem; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; }
-  .feat-card:hover { border-color: var(--teal); box-shadow: var(--shadow); }
-  .feat-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; }
-  .feat-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
-  .feat-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-
   /* TOOL CONTAINER */
-  .tool-wrap { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .tool-wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
   .tool-header { margin-bottom: 1.5rem; }
-  .tool-header h2 { font-size: 22px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
-  .tool-header p { font-size: 14px; color: var(--text-muted); }
+  .tool-header h2 { font-size: 24px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
+  .tool-header p { font-size: 15px; color: var(--text-muted); }
 
   /* ANALYZER */
   .analyzer-box { background: #fff; border: 0.5px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; }
@@ -135,6 +116,11 @@
   .quiz-score { font-size: 48px; font-weight: 600; color: var(--teal); }
   .quiz-score-label { font-size: 16px; font-weight: 500; margin-top: 8px; color: var(--gray-900); }
   .quiz-advice { font-size: 14px; color: var(--text-muted); margin-top: 8px; line-height: 1.6; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
+  .btn-primary { background: var(--teal); color: #fff; }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .btn-secondary { background: #fff; color: var(--gray-700); border: 0.5px solid var(--gray-200); }
+  .btn-secondary:hover { background: var(--gray-100); }
 
   /* GUIDES */
   .guide-list { display: flex; flex-direction: column; gap: 10px; }
@@ -153,73 +139,70 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* FOOTER */
-  footer { text-align: center; padding: 2rem; font-size: 13px; color: var(--text-muted); border-top: 0.5px solid var(--gray-200); }
-
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 28px; }
-    nav { padding: 0 1rem; }
-    .nav-links { gap: 1rem; }
-    .nav-links a { font-size: 13px; }
-  }
+  footer { text-align: center; padding: 2rem; font-size: 13px; color: var(--text-muted); border-top: 0.5px solid var(--gray-200); background: var(--gray-50); }
 </style>
 </head>
-<body>
+<body class="m-0 p-0 font-sans">
 
-<nav>
-  <div class="logo">
-    <div class="logo-icon">🛡️</div>
-    SafeNet
+<!-- PREMIUM FLOATING NAVBAR (Tailwind) -->
+<nav class="fixed top-0 left-0 w-full flex items-center justify-center pt-4 sm:pt-6 px-4 sm:px-8 gap-2 sm:gap-3 z-[100] bg-transparent border-none">
+  <!-- Left Circular Logo Container -->
+  <div class="flex items-center justify-center rounded-full w-10 h-10 sm:w-11 sm:h-11 shrink-0 bg-[#EDEDED] shadow-lg cursor-pointer hover:scale-105 transition-transform" onclick="showSection('home')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgb(84, 84, 84)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
   </div>
-  <div class="nav-links">
-    <a href="#" onclick="showSection('home')">Home</a>
-    <a href="#" onclick="showSection('analyzer')">Analyzer</a>
-    <a href="#" onclick="showSection('chat')">SafeBot</a>
-    <a href="#" onclick="showSection('guides')">Guides</a>
-    <a href="#" onclick="showSection('helplines')">Help</a>
-    <a href="#" onclick="showSection('quiz')">Quiz</a>
+
+  <!-- Right Pill Container -->
+  <div class="flex items-center gap-4 sm:gap-6 md:gap-10 rounded-xl px-4 sm:px-8 py-2.5 sm:py-3 bg-[#EDEDED]/90 backdrop-blur-md shadow-lg border border-white/20">
+      <a href="#" onclick="showSection('analyzer')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">Analyzer</a>
+      <a href="#" onclick="showSection('chat')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">SafeBot</a>
+      <a href="#" onclick="showSection('guides')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">Guides</a>
+      <a href="#" onclick="showSection('helplines')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">Help</a>
+      <a href="#" onclick="showSection('quiz')" class="text-[12px] sm:text-[14px] font-medium text-gray-700 hover:text-black transition-colors duration-200" style="text-decoration:none;">Quiz</a>
   </div>
 </nav>
 
-<!-- HOME -->
-<section id="home" class="active">
-  <div class="hero">
-    <div class="hero-badge">🇮🇳 Free · Anonymous · Safe</div>
-    <h1>Your shield against<br><span>online harassment</span></h1>
-    <p>AI-powered tools to help Indian students detect cyberbullying, get support, and stay safe online.</p>
-    <div class="hero-cta">
-      <button class="btn btn-primary" onclick="showSection('analyzer')">🔍 Analyze a message</button>
-      <button class="btn btn-secondary" onclick="showSection('chat')">💬 Talk to SafeBot</button>
-    </div>
-  </div>
-  <div class="features">
-    <div class="feat-grid">
-      <div class="feat-card" onclick="showSection('analyzer')">
-        <div class="feat-icon" style="background:#E1F5EE; font-size:22px;">🔍</div>
-        <h3>Message analyzer</h3>
-        <p>Paste any message and AI will tell you if it's bullying or safe.</p>
+<!-- IMMERSIVE VIDEO HERO SECTION (Tailwind) -->
+<section id="home" class="active relative min-h-screen overflow-hidden bg-[#121212] m-0 p-0">
+  <!-- Fullscreen Autoplaying Background Video -->
+  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-60">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_215831_c6a8989c-d716-4d8d-8745-e972a2eec711.mp4" type="video/mp4">
+  </video>
+
+  <!-- Foreground Content Wrapper -->
+  <div class="relative z-10 flex flex-col min-h-screen">
+      <div class="flex-1 flex items-end pb-12 sm:pb-16 lg:pb-20 px-6 sm:px-12 md:px-20 lg:px-28">
+          <div class="max-w-lg text-left">
+              
+              <!-- 1. Top Tech Badge -->
+              <div class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#46E3B7] mb-4 uppercase tracking-wider">
+                  🛡️ Free · Anonymous · Safe
+              </div>
+
+              <!-- 2. Headline -->
+              <h1 class="text-[2.2rem] sm:text-[2.8rem] leading-[1.1] font-semibold text-white tracking-tight mb-4 drop-shadow-lg" style="color:white; text-align:left; margin-bottom:1rem; padding:0;">
+                  Anonymous, smart AI defense made for students who keep fighting.
+              </h1>
+
+              <!-- 3. Subtext -->
+              <p class="text-[15px] text-gray-300 font-normal mb-8 max-w-md" style="color:#d1d5db; text-align:left; line-height: 1.6;">
+                  Reclaim your digital peace. Analyze threats, learn safety protocols, and get immediate peer support without judgment.
+              </p>
+
+              <!-- 4. Call to Action Buttons -->
+              <div class="flex flex-wrap gap-4 mb-3">
+                  <button onclick="showSection('chat')" class="inline-flex items-center justify-center gap-2 text-[14px] font-bold text-[#121212] bg-[#46E3B7] border border-[#46E3B7] rounded-full px-7 py-3.5 hover:bg-white hover:text-black hover:border-white transition-all duration-200 group shadow-[0_0_20px_rgba(70,227,183,0.3)] cursor-pointer">
+                      Get Anonymous Help
+                      <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+                  </button>
+                  <button onclick="showSection('analyzer')" class="inline-flex items-center justify-center gap-2 text-[14px] font-medium text-white border border-gray-400 rounded-full px-7 py-3.5 hover:bg-white/10 hover:border-white transition-all duration-200 bg-black/40 backdrop-blur-md cursor-pointer">
+                      Analyze a Message
+                  </button>
+              </div>
+              
+          </div>
       </div>
-      <div class="feat-card" onclick="showSection('chat')">
-        <div class="feat-icon" style="background:#EEEDFE; font-size:22px;">🤖</div>
-        <h3>SafeBot</h3>
-        <p>Talk anonymously to an AI companion when you feel unsafe.</p>
-      </div>
-      <div class="feat-card" onclick="showSection('guides')">
-        <div class="feat-icon" style="background:#FAEEDA; font-size:22px;">📚</div>
-        <h3>Safety guides</h3>
-        <p>Learn how to protect yourself and report abuse online.</p>
-      </div>
-      <div class="feat-card" onclick="showSection('quiz')">
-        <div class="feat-icon" style="background:#E6F1FB; font-size:22px;">✅</div>
-        <h3>Am I safe? Quiz</h3>
-        <p>Check your online safety habits and get personalized tips.</p>
-      </div>
-      <div class="feat-card" onclick="showSection('helplines')">
-        <div class="feat-icon" style="background:#FAECE7; font-size:22px;">📞</div>
-        <h3>Get help now</h3>
-        <p>India helplines for students in crisis — available 24/7.</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -394,7 +377,7 @@
 function showSection(id) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ── ANALYZER ──
